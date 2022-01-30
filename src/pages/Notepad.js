@@ -1,9 +1,11 @@
 import {GlobalStyle, Container, Notas, NotasSalvas, MenuNotas, ContainerNotas, Main, Textarea,Title, Menu, SubMenu} from "../styles"
 import {ThemeProvider} from "styled-components"
-import {useState} from "react"
+import {useEffect, useState, useContext} from "react"
 import Modal from "../components/Modal"
 import MenuNotes from "../components/MenuNotes"
+import { Context } from '../Context/AuthContext'
 import { ligthTheme, darkTheme } from "../theme"
+import api from "../services/api"
 
 //icons
 
@@ -11,12 +13,30 @@ import { WiMoonAltWaningGibbous6 } from "react-icons/wi";
 import { VscFoldDown, VscFoldUp } from "react-icons/vsc";
 
 function Notepad() {  
- 
 
-  const [posts, setPosts] = useState ([])
+  const { authenticated } = useContext(Context)
+  
+ const initialState = JSON.parse(window.localStorage.getItem('Notas')) || []
+   
+
+  const [posts, setPosts] = useState(initialState)
   const [forvalues, setForvalues] = useState()
   const [edit , setEdit] = useState(false)
   const [idx ,setIdx ] = useState()
+
+  useEffect(()=>{
+    if(authenticated === true){       
+      ( async  ()=>{
+      const {data} = await api.post('/notas/sync', posts)      
+        try {          
+          console.log("data",data)                                
+        } catch (error) {
+          console.log(error)
+        }
+    })()
+    }    
+  },[])  
+  
   
   //Data e hora
   var data = new Date();
@@ -40,28 +60,71 @@ function Notepad() {
   }  
   
   //Funçoes das notas
-  function salvar() {     
+  async function salvar() {     
     let titulo = document.getElementById("titulo").value;
     let nota = document.getElementById("nota").value;  
     if (titulo === "" ){
       alert("Digite o Titulo da Nota")
     } else {
-        if (edit === true){          
-          let tempPosts = ({titulo, nota, horaNow, dataNow})          
-          posts.splice(idx, 1, tempPosts)
-          setPosts(posts)
-          document.getElementById("titulo").value =""
-          document.getElementById("nota").value =""
-          document.getElementById("btn").innerText = "Salvar"          
-          setEdit(!edit)
+        //Editar
+        if (edit === true){  
+          if(authenticated === true){
+            let id = posts[idx].id
+            let tempPosts = ({id, titulo, nota})
+            posts.splice(idx, 1, tempPosts)
+            localStorage.setItem('Notas',JSON.stringify(posts))
+            document.getElementById("titulo").value =""
+            document.getElementById("nota").value =""
+            document.getElementById("btn").innerText = "Salvar"          
+            setEdit(!edit)
+            const {data} = await api.put('/notas/edit',{
+              id:id,
+              titulo: titulo,
+              nota:nota
+            })
+            try {
+              console.log(data)                       
+            } catch (error) {
+              console.log(error)
+            }
+          }else{      
+            let tempPosts = ({titulo, nota, horaNow, dataNow})          
+            posts.splice(idx, 1, tempPosts)
+            document.getElementById("titulo").value =""
+            document.getElementById("nota").value =""
+            document.getElementById("btn").innerText = "Salvar"          
+            setEdit(!edit) 
+          }
           
         }else{
-          let tempPosts = ({titulo, nota, horaNow, dataNow})      
-          posts.push(tempPosts)
-          setForvalues('')
-          document.getElementById("titulo").value =""
-          document.getElementById("nota").value =""
-          document.getElementById("btn").innerText = "Salvar"          
+          //Salvar
+          if( authenticated === true){
+            let tempPosts = ({titulo, nota})
+            const {data} = await api.post("/notas",{              
+              titulo: titulo,
+              nota:nota
+            })
+            try {
+              let id = data.id              
+              let tempPosts = ({id, titulo, nota})             
+              posts.push(tempPosts)
+              localStorage.setItem('Notas',JSON.stringify(posts))                           
+              setForvalues('')
+              document.getElementById("titulo").value =""
+              document.getElementById("nota").value =""
+              document.getElementById("btn").innerText = "Salvar"                                  
+            } catch (error) {
+              console.log(error)
+            }
+          }else{
+            let tempPosts = ({titulo, nota, horaNow, dataNow}) 
+            localStorage.setItem('Notas',JSON.stringify(posts))     
+            posts.push(tempPosts)
+            setForvalues('')
+            document.getElementById("titulo").value =""
+            document.getElementById("nota").value =""
+            document.getElementById("btn").innerText = "Salvar"    
+          }                
         }      
     }        
  };
@@ -78,10 +141,27 @@ function Notepad() {
   
 }
 
- function apagar(index){   
-  let tempNotes = [...posts]
-  tempNotes.splice(index, 1)
-  setPosts(tempNotes)  
+async function apagar(index){
+  if(authenticated === true)  {
+    let tempNotes = [...posts]
+    tempNotes.splice(index, 1)
+    let id = posts[index].id
+    setPosts(tempNotes)
+    localStorage.setItem('Notas',JSON.stringify(tempNotes))
+    const {data} = await api.delete('/notas/del',{
+      id:id,    
+    })
+    try {
+      console.log(data)                       
+    } catch (error) {
+      console.log(error)
+  }  
+  } else{
+      let tempNotes = [...posts]
+      tempNotes.splice(index, 1)
+      setPosts(tempNotes)
+    }
+  
 }
 
 

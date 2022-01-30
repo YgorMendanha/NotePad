@@ -36,8 +36,7 @@ function Modal(){
             setUsuario(data)
             document.getElementById("email").value =""
             document.getElementById("senha").value =""
-            //console.log(usuario)
-            console.log(forvalues.email)
+            
             navigat("/")            
 
         } catch (error) {            
