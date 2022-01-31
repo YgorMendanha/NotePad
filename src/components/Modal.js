@@ -1,12 +1,13 @@
-import {useState ,useContext} from 'react';
+import {useState, useContext} from 'react';
 import { Context } from '../Context/AuthContext'
 import { useNavigate } from "react-router-dom"
+import api from '../services/api'
 
 //Icons
 import {Login, CardUser} from "../styles"
 import { BiLogIn } from "react-icons/bi";
 import { AiOutlineClose } from "react-icons/ai";
-import api from '../services/api'
+
 
 
 

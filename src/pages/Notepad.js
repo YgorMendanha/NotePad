@@ -16,7 +16,7 @@ function Notepad() {
 
   const { authenticated } = useContext(Context)
   
- const initialState = JSON.parse(window.localStorage.getItem('Notas')) || []
+ const initialState = JSON.parse(localStorage.getItem('Notas')) || []
    
 
   const [posts, setPosts] = useState(initialState)
@@ -26,7 +26,7 @@ function Notepad() {
 
   useEffect(()=>{
     if(authenticated === true){       
-      ( async  ()=>{
+      ( async ()=>{
       const {data} = await api.post('/notas/sync', posts)      
         try {          
           console.log("data",data)                                
@@ -99,20 +99,22 @@ function Notepad() {
         }else{
           //Salvar
           if( authenticated === true){
-            let tempPosts = ({titulo, nota})
-            const {data} = await api.post("/notas",{              
+            const { data } = await api.post("/notas",{              
               titulo: titulo,
               nota:nota
-            })
-            try {
-              let id = data.id              
-              let tempPosts = ({id, titulo, nota})             
+            }) 
+            let id = data.id              
+            try {                         
+              let tempPosts = ({id, titulo, nota})
               posts.push(tempPosts)
               localStorage.setItem('Notas',JSON.stringify(posts))                           
               setForvalues('')
               document.getElementById("titulo").value =""
               document.getElementById("nota").value =""
-              document.getElementById("btn").innerText = "Salvar"                                  
+              document.getElementById("btn").innerText = "Salvar" 
+              console.log(posts)            
+              console.log(tempPosts)
+              console.log(data.mesage)                                         
             } catch (error) {
               console.log(error)
             }
