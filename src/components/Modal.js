@@ -29,6 +29,7 @@ function Modal(){
         try { 
             let token = data.token  
             let IdUser = data.id
+            console.log("Id USer",IdUser)
             localStorage.setItem('token', JSON.stringify(token))
             localStorage.setItem('IdUser', JSON.stringify(IdUser))            
             setUsuario(data)

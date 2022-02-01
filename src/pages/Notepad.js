@@ -46,7 +46,7 @@ function Notepad() {
       })   
       const {data} = await api.get(`/notas/sync/${IdUser}`)                 
         try {
-          console.log(IdUser)
+          console.log("id user",IdUser)
           setPosts(data)  
           localStorage.setItem('Notas',JSON.stringify(data))      
           console.log("data",data)                                
