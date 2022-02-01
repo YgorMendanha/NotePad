@@ -25,17 +25,37 @@ function Notepad() {
   const [idx ,setIdx ] = useState()
 
   useEffect(()=>{
-    if(authenticated === true){       
+    if(authenticated === true){
+            
       ( async ()=>{
-      const {data} = await api.post('/notas/sync', posts)      
-        try {          
+        let IdUser = localStorage.getItem("IdUser")
+        await posts.forEach((posts,index) =>{
+        if(posts._id === undefined){
+          api.post('/notas/sync', {  
+            userid: IdUser,      
+            titulo: posts.titulo,
+            nota:posts.nota
+          })
+          try{
+            console.log("tudo certo com async")
+          }
+          catch(err){
+            console.log(err)
+          } 
+        }
+      })   
+      const {data} = await api.get(`/notas/sync/${IdUser}`)                 
+        try {
+          console.log(IdUser)
+          setPosts(data)  
+          localStorage.setItem('Notas',JSON.stringify(data))      
           console.log("data",data)                                
         } catch (error) {
           console.log(error)
         }
     })()
     }    
-  },[])  
+  },[authenticated])
   
   
   //Data e hora
@@ -69,27 +89,29 @@ function Notepad() {
         //Editar
         if (edit === true){  
           if(authenticated === true){
+            let IdUser = localStorage.getItem("IdUser")
             let id = posts[idx].id
-            let tempPosts = ({id, titulo, nota})
+            let tempPosts = ({IdUser, id, titulo, nota})
             posts.splice(idx, 1, tempPosts)
             localStorage.setItem('Notas',JSON.stringify(posts))
             document.getElementById("titulo").value =""
             document.getElementById("nota").value =""
             document.getElementById("btn").innerText = "Salvar"          
             setEdit(!edit)
-            const {data} = await api.put('/notas/edit',{
+            const {data} = await api.put('/notas/edit',{                
               id:id,
               titulo: titulo,
               nota:nota
             })
             try {
-              console.log(data)                       
+              console.log(data)                                  
             } catch (error) {
               console.log(error)
             }
           }else{      
-            let tempPosts = ({titulo, nota, horaNow, dataNow})          
+            let tempPosts = ({titulo, nota})          
             posts.splice(idx, 1, tempPosts)
+            localStorage.setItem('Notas',JSON.stringify(posts))
             document.getElementById("titulo").value =""
             document.getElementById("nota").value =""
             document.getElementById("btn").innerText = "Salvar"          
@@ -99,29 +121,29 @@ function Notepad() {
         }else{
           //Salvar
           if( authenticated === true){
-            const { data } = await api.post("/notas",{              
+            let IdUser = localStorage.getItem("IdUser")
+            const { data } = await api.post("/notas",{ 
+              userid: IdUser,             
               titulo: titulo,
               nota:nota
             }) 
             let id = data.id              
             try {                         
-              let tempPosts = ({id, titulo, nota})
+              let tempPosts = ({IdUser, id, titulo, nota})
+              console.log(tempPosts)
               posts.push(tempPosts)
               localStorage.setItem('Notas',JSON.stringify(posts))                           
               setForvalues('')
               document.getElementById("titulo").value =""
               document.getElementById("nota").value =""
               document.getElementById("btn").innerText = "Salvar" 
-              console.log(posts)            
-              console.log(tempPosts)
-              console.log(data.mesage)                                         
             } catch (error) {
               console.log(error)
             }
           }else{
-            let tempPosts = ({titulo, nota, horaNow, dataNow}) 
-            localStorage.setItem('Notas',JSON.stringify(posts))     
+            let tempPosts = ({titulo, nota}) 
             posts.push(tempPosts)
+            localStorage.setItem('Notas',JSON.stringify(posts))     
             setForvalues('')
             document.getElementById("titulo").value =""
             document.getElementById("nota").value =""
@@ -146,7 +168,7 @@ function Notepad() {
 async function apagar(index){
   if(authenticated === true)  {
     let tempNotes = [...posts]
-    tempNotes.splice(index, 1)
+    tempNotes.splice(index, 1)    
     let id = posts[index].id
     setPosts(tempNotes)
     localStorage.setItem('Notas',JSON.stringify(tempNotes))
@@ -161,6 +183,7 @@ async function apagar(index){
   } else{
       let tempNotes = [...posts]
       tempNotes.splice(index, 1)
+      localStorage.setItem('Notas',JSON.stringify(tempNotes))
       setPosts(tempNotes)
     }
   

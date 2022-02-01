@@ -28,16 +28,13 @@ function Modal(){
         })
         try { 
             let token = data.token  
-                   
+            let IdUser = data.id
             localStorage.setItem('token', JSON.stringify(token))
-
-            //verificar funcionalidade
-            //api.defaults.headers.Authorization = 'Bearer ' + token            
-            handleLogin()
+            localStorage.setItem('IdUser', JSON.stringify(IdUser))            
             setUsuario(data)
             document.getElementById("email").value =""
             document.getElementById("senha").value =""
-            
+            handleLogin()
             navigat("/")            
 
         } catch (error) {            
@@ -47,6 +44,7 @@ function Modal(){
 
     function inLogout(){
         localStorage.removeItem('token')
+        localStorage.removeItem('IdUser')
         api.defaults.headers.Authorization = undefined
         handleLoout()
         navigat("/")
