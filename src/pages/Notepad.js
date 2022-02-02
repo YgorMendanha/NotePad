@@ -1,4 +1,4 @@
-import {GlobalStyle, Container, Notas, NotasSalvas, MenuNotas, ContainerNotas, Main, Textarea,Title, Menu, SubMenu} from "../styles"
+import {GlobalStyle, Container, Notas, NotasSalvas, MenuNotas, ContainerNotas, Main, Textarea,Title, Menu, SubMenu,StyledContainer} from "../styles"
 import {ThemeProvider} from "styled-components"
 import {useEffect, useState, useContext} from "react"
 import Modal from "../components/Modal"
@@ -6,6 +6,10 @@ import MenuNotes from "../components/MenuNotes"
 import { Context } from '../Context/AuthContext'
 import { ligthTheme, darkTheme } from "../theme"
 import api from "../services/api"
+
+//Toasts
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 //icons
 
@@ -25,8 +29,7 @@ function Notepad() {
   const [idx ,setIdx ] = useState()
 
   useEffect(()=>{
-    if(authenticated === true){
-            
+    if(authenticated === true){            
       ( async ()=>{
         let IdUser = localStorage.getItem("IdUser")
         await posts.forEach((posts,index) =>{
@@ -37,21 +40,20 @@ function Notepad() {
             nota:posts.nota
           })
           try{
-            console.log("tudo certo com async")
+            toast.success("Notas Publicadas na sua Conta com Sucesso!")
           }
-          catch(err){
-            console.log(err)
+          catch{
+            toast.error("Houve um error ao Publicar as Notas!")
           } 
         }
       })   
       const {data} = await api.get(`/notas/sync/${IdUser}`)                 
-        try {
-          console.log("id user",IdUser)
+        try {          
           setPosts(data)  
           localStorage.setItem('Notas',JSON.stringify(data))      
-          console.log("data",data)                                
-        } catch (error) {
-          console.log(error)
+          toast.success("Sincronizado com Sucesso!")                                
+        } catch{
+          toast.error("Houve um error ao Sincronizar as Notas!")
         }
     })()
     }    
@@ -84,7 +86,7 @@ function Notepad() {
     let titulo = document.getElementById("titulo").value;
     let nota = document.getElementById("nota").value;  
     if (titulo === "" ){
-      alert("Digite o Titulo da Nota")
+      toast.error('Digite um Titulo!');
     } else {
         //Editar
         if (edit === true){  
@@ -98,15 +100,15 @@ function Notepad() {
             document.getElementById("nota").value =""
             document.getElementById("btn").innerText = "Salvar"          
             setEdit(!edit)
-            const {data} = await api.put('/notas/edit',{                
+            await api.put('/notas/edit',{                
               id:id,
               titulo: titulo,
               nota:nota
             })
             try {
-              console.log(data)                                  
-            } catch (error) {
-              console.log(error)
+              toast.success("Nota Editada com Sucesso!")                                  
+            } catch {
+              toast.error("Houve um Erro ao Editar a Nota!")
             }
           }else{      
             let tempPosts = ({titulo, nota})          
@@ -115,7 +117,8 @@ function Notepad() {
             document.getElementById("titulo").value =""
             document.getElementById("nota").value =""
             document.getElementById("btn").innerText = "Salvar"          
-            setEdit(!edit) 
+            setEdit(!edit)
+            toast.success("Nota Editada com Sucesso!") 
           }
           
         }else{
@@ -129,16 +132,16 @@ function Notepad() {
             }) 
             let id = data.id              
             try {                         
-              let tempPosts = ({IdUser, id, titulo, nota})
-              console.log(tempPosts)
+              let tempPosts = ({IdUser, id, titulo, nota})              
               posts.push(tempPosts)
               localStorage.setItem('Notas',JSON.stringify(posts))                           
               setForvalues('')
               document.getElementById("titulo").value =""
               document.getElementById("nota").value =""
               document.getElementById("btn").innerText = "Salvar" 
+              toast.success("Nota Salva com Sucesso!")
             } catch (error) {
-              console.log(error)
+              toast.error("Houve um Error ao Salvar a Nota!")
             }
           }else{
             let tempPosts = ({titulo, nota}) 
@@ -147,7 +150,8 @@ function Notepad() {
             setForvalues('')
             document.getElementById("titulo").value =""
             document.getElementById("nota").value =""
-            document.getElementById("btn").innerText = "Salvar"    
+            document.getElementById("btn").innerText = "Salvar"
+            toast.success("Nota Salva com Sucesso!")    
           }                
         }      
     }        
@@ -172,19 +176,20 @@ async function apagar(index){
     let id = posts[index].id
     setPosts(tempNotes)
     localStorage.setItem('Notas',JSON.stringify(tempNotes))
-    const {data} = await api.delete('/notas/del',{
+    await api.delete('/notas/del',{
       id:id,    
     })
     try {
-      console.log(data)                       
-    } catch (error) {
-      console.log(error)
+      toast.success("Nota Apagada com Sucesso!")                       
+    } catch {
+      toast.error("Houve um Error ao Apagar a Nota!")
   }  
   } else{
       let tempNotes = [...posts]
       tempNotes.splice(index, 1)
       localStorage.setItem('Notas',JSON.stringify(tempNotes))
       setPosts(tempNotes)
+      toast.success("Nota Apagada com Sucesso!")
     }
   
 }
@@ -262,8 +267,10 @@ async function apagar(index){
             </Textarea> 
              
           </Main>
-          
-                                   
+          <StyledContainer
+          position="bottom-left"
+          autoClose={5000}
+          />                                   
 
       </Container>      
       </ThemeProvider>

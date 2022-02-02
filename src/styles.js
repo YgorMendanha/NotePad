@@ -1,4 +1,5 @@
 import styled, { createGlobalStyle } from 'styled-components'
+import { ToastContainer} from 'react-toastify';
 
 
 
@@ -105,7 +106,7 @@ z-index: 1;
 text-align: left;
 width: 100%;
 height: 70px;
-background-color:#f4f1de;
+background-color:${props=> props.theme.textarea};
 border-radius: 0px 0px 15px 0px;
 p{
     height: auto;
@@ -150,7 +151,7 @@ export const Textarea = styled.div`
         border-left:0px;
         border-right:0px;        
         border-width:1px;
-        border-color:${props=> props.theme.textarea};
+        border-color:c;
         &::placeholder{
             color: ${props=> props.theme.placeholder};
         }        
@@ -378,3 +379,16 @@ export const CriarConta = styled.div`
         }
     }   
 `
+export const StyledContainer = styled ( ToastContainer ) `   
+  &&&.Toastify__toast-container {
+    button{
+        color:white
+    }
+}
+.Toastify__toast {
+      background-color: ${props => props.theme.main}
+  }
+  .Toastify__toast-body {
+      color: white;
+  }  
+`;

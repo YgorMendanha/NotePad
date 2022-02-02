@@ -9,10 +9,10 @@ export const ligthTheme = {
     color: "black", 
     main:"#3d405b",     
     placeholder:"#436275",
-    textarea:"#f4f1de",    
+    textarea:"#f4f1de",   
     submenu:"#434663",
     login:"black",
-    modal:"#f4f1de",
+    
     
 }
 
@@ -22,13 +22,12 @@ export const darkTheme={
     hoverbutton:"#c46a52",
     button:"white",
     notasSalvas:"#774936",
-    color: "black", 
+    color: "white", 
     main:"#2f0e07", 
     placeholder:"#532c1e",    
-    textarea:"#f4f1de",    
+    textarea:"#8f5e4a",      
     submenu:"#38160d",
     login:"black",
-    modal:"#f4f1de",
     
     
 }

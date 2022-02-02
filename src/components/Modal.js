@@ -1,7 +1,8 @@
 import {useState, useContext} from 'react';
 import { Context } from '../Context/AuthContext'
-import { useNavigate } from "react-router-dom"
 import api from '../services/api'
+
+import { toast } from 'react-toastify';
 
 //Icons
 import {Login, CardUser} from "../styles"
@@ -13,12 +14,14 @@ import { AiOutlineClose } from "react-icons/ai";
 
 
 
-function Modal(){    
-    let navigat = useNavigate()
+function Modal(){   
+    
+
     const { authenticated, handleLogin, handleLoout } = useContext(Context)
+    const initialState = JSON.parse(localStorage.getItem('User')) || []
     
     const [forvalues, setForvalues] = useState()
-    const [ usuario, setUsuario ] = useState([])
+    const [ usuario, setUsuario ] = useState(initialState)
 
     async function inLogin(){
         
@@ -29,26 +32,32 @@ function Modal(){
         try { 
             let token = data.token  
             let IdUser = data.id
-            console.log("Id USer",IdUser)
+            let usuario = {
+                nome:data.nome,
+                email:data.email
+            }            
             localStorage.setItem('token', JSON.stringify(token))
-            localStorage.setItem('IdUser', JSON.stringify(IdUser))            
-            setUsuario(data)
-            document.getElementById("email").value =""
-            document.getElementById("senha").value =""
-            handleLogin()
-            navigat("/")            
+            localStorage.setItem('IdUser', JSON.stringify(IdUser))
+            localStorage.setItem('User', JSON.stringify(usuario))            
+            setUsuario(usuario)
+            document.getElementById("email").value = null
+            document.getElementById("senha").value = null
+            handleLogin() 
+            toast.success(`Bem vindo, ${usuario.nome}!`)
+                               
 
-        } catch (error) {            
-            console.log(error)
+        } catch  {            
+            toast.error("Email ou Senha incorreto!")
         }
     }
 
     function inLogout(){
         localStorage.removeItem('token')
         localStorage.removeItem('IdUser')
+        toast.info(`Ate mais tarde, ${usuario.nome}!`)      
+        localStorage.removeItem('User')
         api.defaults.headers.Authorization = undefined
-        handleLoout()
-        navigat("/")
+        handleLoout()  
     }
 
     

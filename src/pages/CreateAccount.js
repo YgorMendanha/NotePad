@@ -5,6 +5,7 @@ import { ligthTheme, darkTheme } from "../theme"
 import { WiMoonAltWaningGibbous6 } from "react-icons/wi";
 import api from "../services/api"
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 
 
@@ -17,21 +18,21 @@ function CreateAccount(){
     function Criar(){
         
         if(forvalues.nome === undefined || forvalues.nome === "" ){
-            alert("Digite um Nome")
+            toast.warn("Digite seu Nome!")
         }
+        
         if(forvalues.senha !== forvalues.ConfirmarSenha ){
             alert("As Senha são Diferentes")
-        } else{
-            
+        } else{            
             api.post("/usuario",{
                 nome:forvalues.nome,
                 email:forvalues.email,
                 senha:forvalues.senha
             }).then(
-                console.log("deu Certo"),
+                toast.success("Conta Criada com Sucesso!"),
                 navigate("/")
-            ).catch((e)=>
-                console.log(e)
+            ).catch(
+                toast.error("Houve um Error ao Criar sua Conta!")
             )
         }
     }
