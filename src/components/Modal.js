@@ -42,9 +42,9 @@ function Modal(){
             setUsuario(usuario)
             document.getElementById("email").value = null
             document.getElementById("senha").value = null
+            setForvalues()
             handleLogin() 
-            toast.success(`Bem vindo, ${usuario.nome}!`)
-                               
+            toast.success(`Bem vindo, ${usuario.nome}!`)                               
 
         } catch  {            
             toast.error("Email ou Senha incorreto!")
@@ -77,6 +77,7 @@ function Modal(){
                         <p> {usuario.email} </p>
                     </div>                    
                     <button type="button" data-bs-dismiss="modal" onClick={inLogout}>Sair</button>
+                    
                 </CardUser>
             ) : (
                 <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -108,8 +109,8 @@ function Modal(){
                                         
                                     </div> 
                                     <button type="button" data-bs-dismiss="modal">
-                                        <a href="/createaccount">Criar Conta</a>
-                                    </button>
+                                        <a href="/createaccount">Criar Conta</a>                                       
+                                    </button>                                    
                                     <div className="modal-footer">
                                         <button type="button" data-bs-dismiss="modal" onClick={inLogin}>Entrar</button>                                       
                                     </div>    

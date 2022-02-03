@@ -2,7 +2,7 @@
 
 export const ligthTheme = {
     notas: "#81b29a",
-    menunotas:"#e07a5f",
+    menunotas:"#e0846c",
     hoverbutton:"#c46a52",
     button:"white",
     notasSalvas:"#f2cc8f",

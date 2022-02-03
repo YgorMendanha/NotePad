@@ -17,32 +17,44 @@ export const GlobalStyle = createGlobalStyle`
 export const Container = styled.div`
     color:${props=> props.theme.color};
     background-color: white;
-    display: flex;  
+    display: flex;
+    min-width: 500px;
+    min-height: 100vh;
     
 `;
 
 export const Notas = styled.div`
     background-color: ${props=> props.theme.notas};
     color:${props=> props.theme.color};
-    width: 50vw;
-    height: 100vh;
+    width: 50%;
+    min-height: 100vh;
     
     
 `;
 
 export const NotasSalvas = styled.div`
     width: 80%;
-    height: 80%;
+    min-height: 80%;
+    height: 100px;
     margin: 10%;
     padding: 7px;
     
     color:${props=> props.theme.color};
-    background-color: ${props => props.theme.notasSalvas};
-    
-    flex: 1;
+    background-color: ${props => props.theme.notasSalvas};    
     overflow-y: auto;    
-    z-index: 1; 
-       
+    ::-webkit-scrollbar{
+        width: 5px;
+        border-radius: 50%;
+    }
+    ::-webkit-scrollbar-track{
+        background-color: ${props => props.theme.notasSalvas};
+    }
+    ::-webkit-scrollbar-thumb{
+        background-color: ${props=> props.theme.menunotas};
+        width: 1px;
+        border-radius: 50px;
+    }
+            
     div{
         
         h6{
@@ -100,9 +112,7 @@ ul{
 
 export const ContainerNotas= styled.div`
 resize: none; 
-flex: 1;
-overflow-y: auto;    
-z-index: 1;
+overflow-y: auto; 
 text-align: left;
 width: 100%;
 height: 70px;
@@ -116,8 +126,8 @@ p{
 `;
 
 export const Main = styled.div`
-    width: 50vw;
-    height: 100vh;
+    width: 50%;
+    min-height: 100vh;
     color:${props=> props.theme.color};    
     background-color: ${props=> props.theme.main};
     
@@ -132,7 +142,7 @@ export const Title = styled.div`
     
     p{
         color:white;
-        font-size: 4.5em;
+        font-size: 4em;
         font-family: 'Luxurious Roman', cursive;
     }
 `;
@@ -141,7 +151,7 @@ export const Textarea = styled.div`
     margin-left: 20%;
     margin-top: 100px;
     width: 70%;
-    height: 40%;
+    height: auto;
     text-align: right;
     input{
         width: 100%;
@@ -160,7 +170,7 @@ export const Textarea = styled.div`
         margin-top: 5px;
         resize: none; 
         width:100%;
-        height: 200px;
+        height: 300px;
         background-color:${props=> props.theme.textarea};
         color:${props=> props.theme.color}
         

@@ -39,19 +39,15 @@ function Notepad() {
             titulo: posts.titulo,
             nota:posts.nota
           })
-          try{
-            toast.success("Notas Publicadas na sua Conta com Sucesso!")
-          }
-          catch{
-            toast.error("Houve um error ao Publicar as Notas!")
-          } 
         }
-      })   
+      })      
       const {data} = await api.get(`/notas/sync/${IdUser}`)                 
         try {          
           setPosts(data)  
           localStorage.setItem('Notas',JSON.stringify(data))      
-          toast.success("Sincronizado com Sucesso!")                                
+          if(data.length > 0){
+            toast.success("Sincronizado com Sucesso!")
+          }                                
         } catch{
           toast.error("Houve um error ao Sincronizar as Notas!")
         }
@@ -209,7 +205,7 @@ async function apagar(index){
     
       <ThemeProvider theme={theme === "light" ? ligthTheme : darkTheme}>
       <GlobalStyle />
-      <Container>
+      <Container >
           
           <Notas>
               
