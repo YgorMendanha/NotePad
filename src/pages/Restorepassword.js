@@ -1,49 +1,45 @@
 import {CriarConta, StyledContainer } from "../styles"
 import {ThemeProvider} from "styled-components"
-import React,{useState} from "react"
+import {useState} from "react"
 import { ligthTheme, darkTheme } from "../theme"
 import { WiMoonAltWaningGibbous6 } from "react-icons/wi";
 import api from "../services/api"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from 'react-toastify';
 
 
 
-function CreateAccount(){   
+function Restorepassword(){   
 
-    const [forvalues, setForvalues] = useState({
-        nome:"",
-        email:"",
-        senha:""
-    })
+    const [forvalues, setForvalues] = useState()
     
     const navigate = useNavigate();
-
-    async function Criar(){
+    
+    let params = useParams();
+    async function Atualizar(){
         try {
-            let nome = forvalues.nome[0].toUpperCase() + forvalues.nome.substr(1)
-            console.log(nome)
-            let {data} = await api.post("/usuario",{
-                nome:nome,
-                email:forvalues.email,
-                senha:forvalues.senha,
+            
+            let {data} = await api.put(`/usuario/restorepassword/${params.IdUser}`, {
+                novasenha:forvalues.Novasenha,
                 confirmarsenha:forvalues.ConfirmarSenha
             })
+            
             if(data.length > 0){
                 data.map((erros) => {                    
                     return toast.error(erros.error); 
                 })
             }else{
-                toast.success(data.message)                
+                toast.success(data.message)
                 setTimeout(() => {                    
                     navigate("/");
-                }, 2000)              
+                }, 2000)                
+                             
             }
-        }catch(e){
-            toast.warn("Houve um erros ao Criar sua conta!")
+        }catch(e){            
+            toast.warn("Houve um erros ao Redefinir sua Senha!")
         }
                     
-}
+    }
 
     const handleInputChange = (e) =>{    
         const {name, value} = e.target;
@@ -69,15 +65,12 @@ function CreateAccount(){
                             <WiMoonAltWaningGibbous6 onClick={() =>themeToggler()}/> 
                         </button>
                     </div>
-                    <h1>Criar Conta</h1>
-                    <form onChange={handleInputChange}>
-                        <input type="text" name="nome" placeholder="Nome"  />                        
-                        <input type="email" name="email" placeholder="Email"  />
-                        <input type="password" name="senha" placeholder="Senha"  />
-                        <input type="password" name="ConfirmarSenha" placeholder="Confirmar Senha"  />
-                        <div className="button">
-                            <button type="button"><a href="/">Voltar</a></button>
-                            <button type="button" onClick={Criar}>Criar</button>
+                    <h1>Redefinir Senha</h1>
+                    <form onChange={handleInputChange}>                        
+                        <input type="password" name="Novasenha" placeholder="Nova Senha"  />
+                        <input type="password" name="ConfirmarSenha" placeholder="Confirmar Nova Senha"  />
+                        <div className="button">                          
+                            <button type="button" onClick={Atualizar}>Atualizar</button>
                         </div>
                     </form>
                     
@@ -91,4 +84,4 @@ function CreateAccount(){
         
     )
 }
-export default CreateAccount;
+export default Restorepassword;

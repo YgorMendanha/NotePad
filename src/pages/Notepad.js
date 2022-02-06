@@ -7,6 +7,7 @@ import { Context } from '../Context/AuthContext'
 import { ligthTheme, darkTheme } from "../theme"
 import api from "../services/api"
 
+
 //Toasts
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -28,6 +29,9 @@ function Notepad() {
   const [edit , setEdit] = useState(false)
   const [idx ,setIdx ] = useState()
 
+  //Menu
+  const [aberto, setAberto] = useState()  
+
   useEffect(()=>{
     if(authenticated === true){            
       ( async ()=>{
@@ -41,8 +45,8 @@ function Notepad() {
           })
         }
       })      
-      const {data} = await api.get(`/notas/sync/${IdUser}`)                 
-        try {          
+      try {          
+          const {data} = await api.get(`/notas/sync/${IdUser}`)                 
           setPosts(data)  
           localStorage.setItem('Notas',JSON.stringify(data))      
           if(data.length > 0){
@@ -56,21 +60,6 @@ function Notepad() {
   },[authenticated])
   
   
-  //Data e hora
-  var data = new Date();
-  var dia = String(data.getDate()).padStart(2, '0');
-  var mes = String(data.getMonth() + 1).padStart(2, '0');
-  var ano = data.getFullYear()  
-  var hora = String(data.getHours()).padStart(2, '0');
-  var minutos = String(data.getMinutes()).padStart(2, '0');
-  var segundos = String(data.getSeconds()).padStart(2, '0');
-  var dataNow = dia + '/' + mes + '/' + ano; 
-  var horaNow = hora + ':' + minutos + ':' + segundos;
-  
-
-  
-  
-
   const handleInputChange = (e) =>{    
     const {name, value} = e.target;
     setForvalues({...forvalues, [name]:value})
@@ -80,9 +69,12 @@ function Notepad() {
   //Funçoes das notas
   async function salvar() {     
     let titulo = document.getElementById("titulo").value;
-    let nota = document.getElementById("nota").value;  
+    let nota = document.getElementById("nota").value    
     if (titulo === "" ){
       toast.error('Digite um Titulo!');
+    }
+    if(titulo.length > 30){
+      toast.error('Titulo Muito Grande!')
     } else {
         //Editar
         if (edit === true){  
@@ -96,12 +88,12 @@ function Notepad() {
             document.getElementById("nota").value =""
             document.getElementById("btn").innerText = "Salvar"          
             setEdit(!edit)
-            await api.put('/notas/edit',{                
-              id:id,
-              titulo: titulo,
-              nota:nota
-            })
             try {
+              await api.put('/notas/edit',{                
+                id:id,
+                titulo: titulo,
+                nota:nota
+              })
               toast.success("Nota Editada com Sucesso!")                                  
             } catch {
               toast.error("Houve um Erro ao Editar a Nota!")
@@ -121,13 +113,13 @@ function Notepad() {
           //Salvar
           if( authenticated === true){
             let IdUser = localStorage.getItem("IdUser")
-            const { data } = await api.post("/notas",{ 
-              userid: IdUser,             
-              titulo: titulo,
-              nota:nota
-            }) 
-            let id = data.id              
             try {                         
+              const { data } = await api.post("/notas",{ 
+                userid: IdUser,             
+                titulo: titulo,
+                nota:nota
+              }) 
+              let id = data.id              
               let tempPosts = ({IdUser, id, titulo, nota})              
               posts.push(tempPosts)
               localStorage.setItem('Notas',JSON.stringify(posts))                           
@@ -154,15 +146,11 @@ function Notepad() {
  };
 
  function editar(index){
-  setEdit(!edit)  
-  let jasonTitulo = JSON.stringify(posts[index].titulo)
-  let jasonNota = JSON.stringify(posts[index].nota)
-
-  document.getElementById("titulo").value = jasonTitulo.substring(1, jasonTitulo.length - 1)
-  document.getElementById("nota").value = jasonNota.substring(1, jasonNota.length - 1)
+  setEdit(!edit)
+  document.getElementById("titulo").value = posts[index].titulo
+  document.getElementById("nota").value = posts[index].nota  
   document.getElementById("btn").innerText = "Editar" 
-  setIdx(index)
-  
+  setIdx(index)  
 }
 
 async function apagar(index){
@@ -172,10 +160,10 @@ async function apagar(index){
     let id = posts[index].id
     setPosts(tempNotes)
     localStorage.setItem('Notas',JSON.stringify(tempNotes))
-    await api.delete('/notas/del',{
-      id:id,    
-    })
     try {
+      await api.delete('/notas/del',{
+        id:id,    
+      })
       toast.success("Nota Apagada com Sucesso!")                       
     } catch {
       toast.error("Houve um Error ao Apagar a Nota!")
@@ -197,8 +185,7 @@ async function apagar(index){
     theme === "light" ? setTheme('dark') : setTheme('light')
   } 
 
-  //Menu
-  const [aberto, setAberto] = useState("false")  
+  
   
  
   return (    
@@ -207,29 +194,7 @@ async function apagar(index){
       <GlobalStyle />
       <Container >
           
-          <Notas>
-              
-            <NotasSalvas>
-            {posts.map((post, index) =>
-              <div key={index}>
-                <MenuNotas>
-                  
-                    <p>{post.titulo}</p>
-                    <MenuNotes 
-                      editar={()=> editar(index)}
-                      apagar={()=> apagar(index)}
-                    /> 
-                
-                </MenuNotas>
-                
-                <ContainerNotas>
-                  {post.nota} 
-                </ContainerNotas >
-              </div>
-            )}
-            </NotasSalvas> 
-
-          </Notas>
+          
           <Main> 
               {aberto === true &&(            
                 <SubMenu>
@@ -263,6 +228,29 @@ async function apagar(index){
             </Textarea> 
              
           </Main>
+          <Notas>
+              
+            <NotasSalvas>
+            {posts.map((post, index) =>
+              <div key={index}>
+                <MenuNotas>
+                  
+                    <p>{post.titulo}</p>
+                    <MenuNotes 
+                      editar={()=> editar(index)}
+                      apagar={()=> apagar(index)}
+                    /> 
+                
+                </MenuNotas>
+                
+                <ContainerNotas>
+                  {post.nota} 
+                </ContainerNotas >
+              </div>
+            )}
+            </NotasSalvas> 
+
+          </Notas>
           <StyledContainer
           position="bottom-left"
           autoClose={5000}
