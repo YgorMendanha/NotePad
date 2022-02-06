@@ -143,7 +143,8 @@ function Modal(){
                         <div className="modal-header">
 
                             <p className="modal-title" id="staticBackdropLabel">
-                            Recuperar Senha!
+                            {recoveryPassword === true ? "Recuperar Senha" : "Entrar"}
+                            
                             </p>
                             <button type="button" data-bs-dismiss="modal" aria-label="Close"> <AiOutlineClose className="icon"/> </button>
                             
