@@ -11,23 +11,18 @@ import { toast } from 'react-toastify';
 
 function CreateAccount(){   
 
-    const [forvalues, setForvalues] = useState({
-        nome:"",
-        email:"",
-        senha:""
-    })
+    const [forvalues, setForvalues] = useState()
     
     const navigate = useNavigate();
 
-    async function Criar(){
+    async function Create(){
         try {
-            let nome = forvalues.nome[0].toUpperCase() + forvalues.nome.substr(1)
-            console.log(nome)
-            let {data} = await api.post("/usuario",{
-                nome:nome,
+            let name = forvalues.name[0].toUpperCase() + forvalues.name.substr(1)
+            let {data} = await api.post("/user",{
+                name:name,
                 email:forvalues.email,
-                senha:forvalues.senha,
-                confirmarsenha:forvalues.ConfirmarSenha
+                password:forvalues.password,
+                confirmpassword:forvalues.confirmpassword
             })
             if(data.length > 0){
                 data.map((erros) => {                    
@@ -40,7 +35,7 @@ function CreateAccount(){
                 }, 2000)              
             }
         }catch(e){
-            toast.warn("Houve um erros ao Criar sua conta!")
+            toast.warn("Houve um erro ao Criar sua conta!")
         }
                     
 }
@@ -49,7 +44,6 @@ function CreateAccount(){
         const {name, value} = e.target;
         setForvalues({...forvalues, [name]:value})           
       }     
-
 
 
      //Tema
@@ -71,13 +65,13 @@ function CreateAccount(){
                     </div>
                     <h1>Criar Conta</h1>
                     <form onChange={handleInputChange}>
-                        <input type="text" name="nome" placeholder="Nome"  />                        
+                        <input type="text" name="name" placeholder="Nome"  />                        
                         <input type="email" name="email" placeholder="Email"  />
-                        <input type="password" name="senha" placeholder="Senha"  />
-                        <input type="password" name="ConfirmarSenha" placeholder="Confirmar Senha"  />
+                        <input type="password" name="password" placeholder="Senha"  />
+                        <input type="password" name="confirmpassword" placeholder="Confirmar Senha"  />
                         <div className="button">
                             <button type="button"><a href="/">Voltar</a></button>
-                            <button type="button" onClick={Criar}>Criar</button>
+                            <button type="button" onClick={Create}>Criar</button>
                         </div>
                     </form>
                     

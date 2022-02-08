@@ -15,12 +15,13 @@ export const GlobalStyle = createGlobalStyle`
     ::-webkit-scrollbar{
         width: 5px;
         border-radius: 50%;
+        height: 5px;
     }
     ::-webkit-scrollbar-track{
-        background-color: ${props=> props.theme.main};
+        background-color: ${props=> props.theme.notas};
     }
     ::-webkit-scrollbar-thumb{
-        background-color:  ${props=> props.theme.notas};
+        background-color:  ${props=> props.theme.main};
         width: 1px;
         border-radius: 50px;
     }  
@@ -63,6 +64,7 @@ export const NotasSalvas = styled.div`
     ::-webkit-scrollbar{
         width: 5px;
         border-radius: 50%;
+        
     }
     ::-webkit-scrollbar-track{
         background-color: ${props => props.theme.notasSalvas};
@@ -157,6 +159,7 @@ p{
 ::-webkit-scrollbar{
         width: 5px;
         border-radius: 50%;
+        
     }
     ::-webkit-scrollbar-track{
         background-color: ${props => props.theme.notasSalvas};
@@ -195,6 +198,7 @@ export const Title = styled.div`
 
 export const Textarea = styled.div`
     margin:auto;
+    margin-bottom: 10px;
     width: 70%;
     height: auto;
     text-align: right;
@@ -447,7 +451,7 @@ export const CriarConta = styled.div`
                     color: ${props=> props.theme.button};
                     &:hover{
                         border-radius: 10px;
-                        ${props => props.theme.hoverbutton};
+                        background-color:${props => props.theme.hoverbutton};
                 }                
                 } 
                 

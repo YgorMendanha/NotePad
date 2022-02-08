@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 import {useState, useContext} from 'react';
 import { Context } from '../Context/AuthContext'
 import api from '../services/api'
@@ -21,33 +22,36 @@ function Modal(){
     const { authenticated, handleLogin, handleLoout } = useContext(Context)
 
     const [forvalues, setForvalues] = useState()
-    const [ usuario, setUsuario ] = useState(initialState)
+    const [user, setUser ] = useState(initialState)
     const [recoveryPassword, setRecoveryPassword] = useState()
     
 
     async function inLogin(){        
         try { 
-            const {data} = await api.post("/usuario/login",{
+            const {data} = await api.post("/user/login",{
                 email: forvalues.email,
-                senha: forvalues.senha
+                password: forvalues.password
             })            
             if(data.token !== undefined ){
                 let token = data.token  
                 let IdUser = data.id
-                let usuario = {
-                    nome:data.nome,
+                let user = {
+                    name:data.name,
                     email:data.email
                 }   
                 localStorage.setItem('token', JSON.stringify(token))
                 localStorage.setItem('IdUser', JSON.stringify(IdUser))
-                localStorage.setItem('User', JSON.stringify(usuario))            
-                setUsuario(usuario)
+                localStorage.setItem('User', JSON.stringify(user))            
+                setUser(user)
                 document.getElementById("email").value = null
-                document.getElementById("senha").value = null            
-                toast.success(`Bem vindo, ${usuario.nome}!`)                        
+                document.getElementById("password").value = null            
+                toast.success(`Bem vindo, ${user.name}!`)                        
                 setForvalues()
                 handleLogin()                        
-            }else{                
+            }else{   
+                document.getElementById("email").value = null
+                document.getElementById("password").value = null  
+                setForvalues()            
                 toast.error(data)
             }
         } catch{
@@ -58,7 +62,7 @@ function Modal(){
     function inLogout(){
         localStorage.removeItem('token')
         localStorage.removeItem('IdUser')
-        toast.info(`Ate mais tarde, ${usuario.nome}!`)      
+        toast.info(`Ate mais tarde, ${user.name}!`)      
         localStorage.removeItem('User')
         api.defaults.headers.Authorization = undefined
         handleLoout()  
@@ -67,15 +71,15 @@ function Modal(){
     async function UpdatePassword(){
         try {
             let IdUser = localStorage.getItem("IdUser")
-            const {data} = await api.put(`/usuario/update/${IdUser}`,{               
-                senha:forvalues.senhaAtual,
-                novasenha:forvalues.novasenha,
-                confirmarsenha:forvalues.confirmarsenha
+            const {data} = await api.put(`/user/update/${IdUser}`,{               
+                password:forvalues.password,
+                newpassword:forvalues.newpassword,
+                confirmpassword:forvalues.confirmpassword
             }) 
             setForvalues()
-            document.getElementById("senhaAtual").value = null
-            document.getElementById("novasenha").value = null 
-            document.getElementById("confirmarsenha").value = null
+            document.getElementById("password").value = null
+            document.getElementById("newpassword").value = null 
+            document.getElementById("confirmpassword").value = null
             if(data.length > 0){
                 data.map((erros) => {                    
                     return toast.error(erros.error); 
@@ -85,24 +89,22 @@ function Modal(){
             toast.success(data.message)           
         } catch(e){            
             setForvalues()
-            document.getElementById("senhaAtual").value = null
-            document.getElementById("novasenha").value = null 
-            document.getElementById("confirmarsenha").value = null
+            document.getElementById("password").value = null
+            document.getElementById("newpassword").value = null 
+            document.getElementById("confirmpassword").value = null
             toast.error("Houve um Erro ao Atualizar sua Senha!")
         }
     }
 
-    async function EnviarEmail(){
+    async function sendEmail(){
         try {
-            const {data} = await api.post("/usuario/restorepassword",{
+            const {data} = await api.post("/user/restorepassword",{
                 email: forvalues.email                
             })
             document.getElementById("email").value = null
-            setForvalues()
-            console.log(data)
+            setForvalues()           
             toast.success(data.message)
-        } catch(e){   
-            console.log(e)         
+        } catch{   
             toast.error("Houve um Erro ao Enviar seu E-mail!")
         }
 
@@ -114,14 +116,14 @@ function Modal(){
     }             
     
       
-
+    
     return(
         <Login>
             {authenticated === true ? (
                 <CardUser>
                     <div id="user">
-                        <p> {usuario.nome}  </p>
-                        <p> {usuario.email} </p>
+                        <p> {user.name}  </p>
+                        <p> {user.email} </p>
                     </div>
                     <div id="buttons">
                         <button type="button" data-bs-toggle="modal" data-bs-target="#Password">
@@ -162,19 +164,19 @@ function Modal(){
                                                 <button type="button" onClick={()=> setRecoveryPassword(!recoveryPassword)}>
                                                 Voltar                               
                                                 </button>                              
-                                                <button type="button" data-bs-dismiss="modal" onClick={EnviarEmail}>Enviar</button>                                       
+                                                <button type="button" data-bs-dismiss="modal" onClick={sendEmail}>Enviar</button>                                       
                                             </div>  
                                         </form>    
                                     ):(
                                     <form onChange={handleInputChange}>
                                         <div className="mb-3">                                        
                                        
-                                        <input type="email" name="email" id="email" aria-describedby="emailHelp"  placeholder="Email"/>
+                                            <input type="email" name="email" id="email" aria-describedby="emailHelp"  placeholder="Email"/>
                                         
                                         </div>
                                         <div className="mb-3">
                                             
-                                            <input type="password" name="senha" id="senha" placeholder="Senha"/>
+                                            <input type="password" name="password" id="password" placeholder="Senha"/>
                                             
                                         </div> 
                                         <button type="button" data-bs-dismiss="modal">
@@ -192,9 +194,9 @@ function Modal(){
                         </div>                        
                     </div>
                 </div>
-                </div>
-
+                </div>              
                 
+                                        
 
                 <div className="modal fade" id="Password" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog">
@@ -211,17 +213,17 @@ function Modal(){
                                 <form onChange={handleInputChange}>
                                     <div className="mb-3">                                        
                                        
-                                        <input type="password" name="senhaAtual" id="senhaAtual"   placeholder="Senha Atual"/>
+                                        <input type="password" name="password" id="password" placeholder="Senha Atual"/>
                                         
                                     </div>
                                     <div className="mb-3">
                                         
-                                        <input type="password" name="novasenha" id="novasenha" placeholder="Nova senhaSenha"/>
+                                        <input type="password" name="newpassword" id="newpassword" placeholder="Nova senhaSenha"/>
                                         
                                     </div> 
                                     <div className="mb-3">
                                         
-                                        <input type="password" name="confirmarsenha" id="confirmarsenha" placeholder="Repita a Nova Senha"/>
+                                        <input type="password" name="confirmpassword" id="confirmpassword" placeholder="Repita a Nova Senha"/>
                                         
                                     </div> 
                                     <div className="modal-footer">

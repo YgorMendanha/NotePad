@@ -13,7 +13,6 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 //icons
-
 import { WiMoonAltWaningGibbous6 } from "react-icons/wi";
 import { VscFoldDown, VscFoldUp } from "react-icons/vsc";
 
@@ -21,34 +20,35 @@ function Notepad() {
 
   const { authenticated } = useContext(Context)
   
- const initialState = JSON.parse(localStorage.getItem('Notas')) || []
+ const initialState = JSON.parse(localStorage.getItem('Notes')) || []
    
 
   const [posts, setPosts] = useState(initialState)
   const [forvalues, setForvalues] = useState()
-  const [edit , setEdit] = useState(false)
+  const [toedit , setToEdit] = useState(false)
   const [idx ,setIdx ] = useState()
 
   //Menu
-  const [aberto, setAberto] = useState()  
+  const [open, setOpen] = useState()  
 
+  //Sync
   useEffect(()=>{
     if(authenticated === true){            
       ( async ()=>{
+        try {          
         let IdUser = localStorage.getItem("IdUser")
-        await posts.forEach((posts,index) =>{
-        if(posts._id === undefined){
-          api.post('/notas/sync', {  
+        await posts.forEach((posts) => {
+        if(posts._id === undefined){          
+          api.post('/notes/sync', {  
             userid: IdUser,      
-            titulo: posts.titulo,
-            nota:posts.nota
+            title: posts.title,
+            note:posts.note
           })
         }
       })      
-      try {          
-          const {data} = await api.get(`/notas/sync/${IdUser}`)                 
+          const {data} = await api.get(`/notes/sync/${IdUser}`)                 
           setPosts(data)  
-          localStorage.setItem('Notas',JSON.stringify(data))      
+          localStorage.setItem('Notes',JSON.stringify(data))      
           if(data.length > 0){
             toast.success("Sincronizado com Sucesso!")
           }                                
@@ -67,77 +67,77 @@ function Notepad() {
   }  
   
   //Funçoes das notas
-  async function salvar() {     
-    let titulo = document.getElementById("titulo").value;
-    let nota = document.getElementById("nota").value    
-    if (titulo === "" ){
-      toast.error('Digite um Titulo!');
+  async function Save() {     
+    let title = document.getElementById("title").value;
+    let note = document.getElementById("note").value    
+    if (title === "" || title === undefined){
+      return toast.error('Digite um Titulo!');
     }
-    if(titulo.length > 30){
-      toast.error('Titulo Muito Grande!')
+    if(title.length > 30){
+      return  toast.error('Titulo Muito Grande!')
     } else {
         //Editar
-        if (edit === true){  
+        if (toedit === true){  
           if(authenticated === true){
-            let IdUser = localStorage.getItem("IdUser")
-            let id = posts[idx].id
-            let tempPosts = ({IdUser, id, titulo, nota})
-            posts.splice(idx, 1, tempPosts)
-            localStorage.setItem('Notas',JSON.stringify(posts))
-            document.getElementById("titulo").value =""
-            document.getElementById("nota").value =""
-            document.getElementById("btn").innerText = "Salvar"          
-            setEdit(!edit)
             try {
-              await api.put('/notas/edit',{                
-                id:id,
-                titulo: titulo,
-                nota:nota
+              let _id = posts[idx]._id              
+              let {data} = await api.put('/notes/edit',{                
+                id:_id,
+                title: title,
+                note:note
               })
-              toast.success("Nota Editada com Sucesso!")                                  
+              let userid = localStorage.getItem("IdUser")
+              let tempPosts = ({_id, userid, title, note})
+              posts.splice(idx, 1, tempPosts)
+              localStorage.setItem('Notes',JSON.stringify(posts))
+              document.getElementById("title").value =""
+              document.getElementById("note").value =""
+              document.getElementById("btn").innerText = "Salvar"          
+              setToEdit(!toedit)              
+              toast.success(data.message)                                  
             } catch {
               toast.error("Houve um Erro ao Editar a Nota!")
             }
           }else{      
-            let tempPosts = ({titulo, nota})          
+            let tempPosts = ({title, note})          
             posts.splice(idx, 1, tempPosts)
-            localStorage.setItem('Notas',JSON.stringify(posts))
-            document.getElementById("titulo").value =""
-            document.getElementById("nota").value =""
+            localStorage.setItem('Notes',JSON.stringify(posts))
+            document.getElementById("title").value =""
+            document.getElementById("note").value =""
             document.getElementById("btn").innerText = "Salvar"          
-            setEdit(!edit)
+            setToEdit(!toedit)
             toast.success("Nota Editada com Sucesso!") 
           }
           
         }else{
           //Salvar
           if( authenticated === true){
-            let IdUser = localStorage.getItem("IdUser")
+            let userid = localStorage.getItem("IdUser")
             try {                         
-              const { data } = await api.post("/notas",{ 
-                userid: IdUser,             
-                titulo: titulo,
-                nota:nota
+              const { data } = await api.post("/notes",{ 
+                userid: userid,             
+                title: title,
+                note:note
               }) 
-              let id = data.id              
-              let tempPosts = ({IdUser, id, titulo, nota})              
+              let _id = data._id             
+              let tempPosts = ({userid, _id, title, note})              
               posts.push(tempPosts)
-              localStorage.setItem('Notas',JSON.stringify(posts))                           
+              localStorage.setItem('Notes',JSON.stringify(posts))                           
               setForvalues('')
-              document.getElementById("titulo").value =""
-              document.getElementById("nota").value =""
+              document.getElementById("title").value =""
+              document.getElementById("note").value =""
               document.getElementById("btn").innerText = "Salvar" 
-              toast.success("Nota Salva com Sucesso!")
-            } catch (error) {
+              toast.success(data.message)
+            } catch{
               toast.error("Houve um Error ao Salvar a Nota!")
             }
           }else{
-            let tempPosts = ({titulo, nota}) 
+            let tempPosts = ({title, note}) 
             posts.push(tempPosts)
-            localStorage.setItem('Notas',JSON.stringify(posts))     
+            localStorage.setItem('Notes',JSON.stringify(posts))     
             setForvalues('')
-            document.getElementById("titulo").value =""
-            document.getElementById("nota").value =""
+            document.getElementById("title").value =""
+            document.getElementById("note").value =""
             document.getElementById("btn").innerText = "Salvar"
             toast.success("Nota Salva com Sucesso!")    
           }                
@@ -145,33 +145,31 @@ function Notepad() {
     }        
  };
 
- function editar(index){
-  setEdit(!edit)
-  document.getElementById("titulo").value = posts[index].titulo
-  document.getElementById("nota").value = posts[index].nota  
+ function Edit(index){
+  setToEdit(!toedit)
+  document.getElementById("title").value = posts[index].title
+  document.getElementById("note").value = posts[index].note  
   document.getElementById("btn").innerText = "Editar" 
   setIdx(index)  
 }
 
-async function apagar(index){
+async function Remove(index){
   if(authenticated === true)  {
-    let tempNotes = [...posts]
-    tempNotes.splice(index, 1)    
-    let id = posts[index].id
-    setPosts(tempNotes)
-    localStorage.setItem('Notas',JSON.stringify(tempNotes))
     try {
-      await api.delete('/notas/del',{
-        id:id,    
-      })
-      toast.success("Nota Apagada com Sucesso!")                       
+      let _id = posts[index]._id
+      let {data} = await api.delete(`/notes/del/${_id}`)
+      let tempNotes = [...posts]
+      tempNotes.splice(index, 1)    
+      setPosts(tempNotes)
+      localStorage.setItem('Notes',JSON.stringify(tempNotes))
+      toast.success(data.message)                       
     } catch {
       toast.error("Houve um Error ao Apagar a Nota!")
   }  
   } else{
       let tempNotes = [...posts]
       tempNotes.splice(index, 1)
-      localStorage.setItem('Notas',JSON.stringify(tempNotes))
+      localStorage.setItem('Notes',JSON.stringify(tempNotes))
       setPosts(tempNotes)
       toast.success("Nota Apagada com Sucesso!")
     }
@@ -183,20 +181,17 @@ async function apagar(index){
   const [theme, setTheme] = useState("light")
   const themeToggler = () => {
     theme === "light" ? setTheme('dark') : setTheme('light')
-  } 
-
-  
-  
+  }   
  
+  
   return (    
     
       <ThemeProvider theme={theme === "light" ? ligthTheme : darkTheme}>
       <GlobalStyle />
-      <Container >
-          
+      <Container >         
           
           <Main> 
-              {aberto === true &&(            
+              {open === true &&(            
                 <SubMenu>
                     
                     <Modal/>                  
@@ -208,10 +203,10 @@ async function apagar(index){
                 </SubMenu>                  
               )}  
             <Menu>
-              {aberto === true ? (
-                <VscFoldUp onClick={()=> setAberto(!aberto)}/>
+              {open === true ? (
+                <VscFoldUp onClick={()=> setOpen(!open)}/>
               ) :(
-                <VscFoldDown onClick={()=> setAberto(!aberto)}/>
+                <VscFoldDown onClick={()=> setOpen(!open)}/>
               )}
             </Menu>                     
 
@@ -221,9 +216,9 @@ async function apagar(index){
 
             <Textarea>
               <form >
-                <input type="text" name="name" id="titulo" placeholder="Titulo" onChange={handleInputChange}/>                
-                <textarea type="text" name="nota" id="nota" onChange={handleInputChange}/>
-                <button type="button" id="btn" onClick={salvar}> Salvar </button>
+                <input type="text" name="title" id="title" placeholder="Titulo" onChange={handleInputChange}/>                
+                <textarea type="text" name="note" id="note"  onChange={handleInputChange}/>
+                <button type="button" id="btn" onClick={Save}> Salvar </button>
               </form>              
             </Textarea> 
              
@@ -233,18 +228,17 @@ async function apagar(index){
             <NotasSalvas>
             {posts.map((post, index) =>
               <div key={index}>
-                <MenuNotas>
-                  
-                    <p>{post.titulo}</p>
+                <MenuNotas>                  
+                    <p>{post.title}</p>
                     <MenuNotes 
-                      editar={()=> editar(index)}
-                      apagar={()=> apagar(index)}
+                      edit={()=> Edit(index)}
+                      remove={()=> Remove(index)}
                     /> 
                 
                 </MenuNotas>
                 
                 <ContainerNotas>
-                  {post.nota} 
+                  {post.note} 
                 </ContainerNotas >
               </div>
             )}
@@ -252,7 +246,7 @@ async function apagar(index){
 
           </Notas>
           <StyledContainer
-          position="bottom-left"
+          position="bottom-right"
           autoClose={5000}
           />                                   
 

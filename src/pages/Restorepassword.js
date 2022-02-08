@@ -13,15 +13,15 @@ function Restorepassword(){
 
     const [forvalues, setForvalues] = useState()
     
-    const navigate = useNavigate();
-    
+    const navigate = useNavigate();    
     let params = useParams();
-    async function Atualizar(){
+    
+    async function Restore(){
         try {
             
-            let {data} = await api.put(`/usuario/restorepassword/${params.IdUser}`, {
-                novasenha:forvalues.Novasenha,
-                confirmarsenha:forvalues.ConfirmarSenha
+            let {data} = await api.put(`/user/restorepassword/${params.IdUser}`, {
+                newpassword:forvalues.newpassword,
+                confirmpassword:forvalues.confirmpassword
             })
             
             if(data.length > 0){
@@ -67,10 +67,10 @@ function Restorepassword(){
                     </div>
                     <h1>Redefinir Senha</h1>
                     <form onChange={handleInputChange}>                        
-                        <input type="password" name="Novasenha" placeholder="Nova Senha"  />
-                        <input type="password" name="ConfirmarSenha" placeholder="Confirmar Nova Senha"  />
+                        <input type="password" name="newpassword" placeholder="Nova Senha"  />
+                        <input type="password" name="confirmpassword" placeholder="Confirmar Nova Senha"  />
                         <div className="button">                          
-                            <button type="button" onClick={Atualizar}>Atualizar</button>
+                            <button type="button" onClick={Restore}>Atualizar</button>
                         </div>
                     </form>
                     
