@@ -64,6 +64,7 @@ function Modal(){
         localStorage.removeItem('IdUser')
         toast.info(`Ate mais tarde, ${user.name}!`)      
         localStorage.removeItem('User')
+        localStorage.removeItem('Notes')
         api.defaults.headers.Authorization = undefined
         handleLoout()  
     }

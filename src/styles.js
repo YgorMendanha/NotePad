@@ -198,7 +198,7 @@ export const Title = styled.div`
 
 export const Textarea = styled.div`
     margin:auto;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     width: 70%;
     height: auto;
     text-align: right;
