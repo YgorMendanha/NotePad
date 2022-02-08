@@ -1,4 +1,4 @@
-import {CriarConta, StyledContainer } from "../styles"
+import {AccountCreate, StyledContainer } from "../styles"
 import {ThemeProvider} from "styled-components"
 import React,{useState} from "react"
 import { ligthTheme, darkTheme } from "../theme"
@@ -35,6 +35,7 @@ function CreateAccount(){
                 }, 2000)              
             }
         }catch(e){
+            console.log(e)
             toast.warn("Houve um erro ao Criar sua conta!")
         }
                     
@@ -55,7 +56,7 @@ function CreateAccount(){
     return(         
         <ThemeProvider theme={theme === "light" ? ligthTheme : darkTheme}>
             
-            <CriarConta>
+            <AccountCreate>
                                
                 <div className="CriarConta">   
                     <div className="theme">                        
@@ -80,7 +81,7 @@ function CreateAccount(){
                 position="bottom-left"
                 autoClose={5000}
                 />
-            </CriarConta>
+            </AccountCreate>
         </ThemeProvider>
         
     )

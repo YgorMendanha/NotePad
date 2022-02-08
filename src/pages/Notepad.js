@@ -1,4 +1,4 @@
-import {GlobalStyle, Container, Notas, NotasSalvas, MenuNotas, ContainerNotas, Main, Textarea,Title, Menu, SubMenu,StyledContainer} from "../styles"
+import {GlobalStyle, Container, Notes, SavedNotes, NotesMenu, ContainerNotes, Main, Textarea,Title, Menu, SubMenu,StyledContainer} from "../styles"
 import {ThemeProvider} from "styled-components"
 import {useEffect, useState, useContext} from "react"
 import Modal from "../components/Modal"
@@ -223,28 +223,28 @@ async function Remove(index){
             </Textarea> 
              
           </Main>
-          <Notas>
+          <Notes>
               
-            <NotasSalvas>
+            <SavedNotes>
             {posts.map((post, index) =>
               <div key={index}>
-                <MenuNotas>                  
+                <NotesMenu>                  
                     <p>{post.title}</p>
                     <MenuNotes 
                       edit={()=> Edit(index)}
                       remove={()=> Remove(index)}
                     /> 
                 
-                </MenuNotas>
+                </NotesMenu>
                 
-                <ContainerNotas>
+                <ContainerNotes>
                   {post.note} 
-                </ContainerNotas >
+                </ContainerNotes >
               </div>
             )}
-            </NotasSalvas> 
+            </SavedNotes> 
 
-          </Notas>
+          </Notes>
           <StyledContainer
           position="bottom-right"
           autoClose={5000}

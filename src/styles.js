@@ -42,135 +42,6 @@ export const Container = styled.div`
     
 `;
 
-export const Notas = styled.div`
-    background-color: ${props=> props.theme.notas};
-    color:${props=> props.theme.color};
-    width: 50%;
-    min-height: 100vh;
-    
-    
-`;
-
-export const NotasSalvas = styled.div`
-    width: 80%;
-    min-height: 80%;
-    height: 100px;
-    margin: 10%;
-    padding: 7px;
-    
-    color:${props=> props.theme.color};
-    background-color: ${props => props.theme.notasSalvas};    
-    overflow-y: auto;    
-    ::-webkit-scrollbar{
-        width: 5px;
-        border-radius: 50%;
-        
-    }
-    ::-webkit-scrollbar-track{
-        background-color: ${props => props.theme.notasSalvas};
-    }
-    ::-webkit-scrollbar-thumb{
-        background-color: ${props=> props.theme.menunotas};
-        width: 1px;
-        border-radius: 50px;
-    }
-            
-    div{
-        
-        h6{
-            font-size:1.3em;
-        }
-        
-    }
-
-`;
-
-export const MenuNotas = styled.header`
-border-radius: 15px 0px 0px 0px;
-margin-top: 6px;
-display: flex;
-background-color: ${props => props.theme.menunotas};
-overflow-x: auto; 
-::-webkit-scrollbar{        
-        height: 8px;
-        border-radius: 50%;
-    }
-    ::-webkit-scrollbar-track{
-        background-color: ${props=> props.theme.textarea};
-    }
-    ::-webkit-scrollbar-thumb{
-        background-color: ${props => props.theme.notasSalvas};        
-        border-radius: 50px;
-    };
-p{
-    text-align:left;
-    width: 100%;
-    display: inline-block;
-    margin: 5px;
-    font-size: 1.2em;
-    color: white;
-    
-    
-}
-button.button{
-    margin: 5px;
-    border: none;
-    color: white;
-    max-height: 30px;
-    background-color: ${props => props.theme.menunotas};
-    &:hover{
-        
-        border-radius: 50%;
-        background-color: ${props => props.theme.hoverbutton};
-        color: ${props => props.theme.button};
-    }
-    
-    svg{
-        margin-bottom: 2px
-    }    
-}
-ul{
-    background-color: ${props => props.theme.menunotas};
-    min-width: 30px;
-    button{
-        color: white;
-        &:hover{
-            color: white;
-            background-color: ${props => props.theme.hoverbutton}
-            
-        }       
-    }
-}
-`;
-
-export const ContainerNotas= styled.div`
-resize: none; 
-overflow-y: auto; 
-text-align: left;
-width: 100%;
-height: 70px;
-background-color:${props=> props.theme.textarea};
-border-radius: 0px 0px 15px 0px;
-p{
-    height: auto;
-    max-width: 100%;
-    background-color: black;
-}
-::-webkit-scrollbar{
-        width: 5px;
-        border-radius: 50%;
-        
-    }
-    ::-webkit-scrollbar-track{
-        background-color: ${props => props.theme.notasSalvas};
-    }
-    ::-webkit-scrollbar-thumb{
-        background-color: ${props=> props.theme.menunotas};
-        width: 1px;
-        border-radius: 50px;
-    }
-`;
-
 export const Main = styled.div`
     width: 50%;
     min-height: 100vh;
@@ -178,6 +49,37 @@ export const Main = styled.div`
     background-color: ${props=> props.theme.main};
     text-align:center;
     
+`;
+
+export const SubMenu = styled.div`    
+    background-color: ${props=> props.theme.submenu};
+    font-size: 2.5em;    
+    display: flex;    
+    height: 90px;
+    text-align: center;
+       
+    button{
+        border:none;
+        background-color:transparent;
+        color: ${props=> props.theme.button};
+        padding: 0px;
+        width: 45px;
+        height: 90px;
+        font-size: 30px;
+        
+    }
+    
+`;
+
+export const Menu = styled.div`     
+    background-color: ${props=> props.theme.main};
+    font-size: 1.8em;    
+    text-align: right;
+    color: ${props=> props.theme.button};
+    svg{
+        margin: 5px; 
+    }
+       
 `;
 
 export const Title = styled.div`
@@ -240,36 +142,135 @@ export const Textarea = styled.div`
     
 `;
 
-export const Menu = styled.div`     
-    background-color: ${props=> props.theme.main};
-    font-size: 1.8em;    
-    text-align: right;
-    color: ${props=> props.theme.button};
-    svg{
-        margin: 5px; 
-    }
-       
-`;
-
-export const SubMenu = styled.div`    
-    background-color: ${props=> props.theme.submenu};
-    font-size: 2.5em;    
-    display: flex;    
-    height: 90px;
-    text-align: center;
-       
-    button{
-        border:none;
-        background-color:transparent;
-        color: ${props=> props.theme.button};
-        padding: 0px;
-        width: 45px;
-        height: 90px;
-        font-size: 30px;
-        
-    }
+export const Notes = styled.div`
+    background-color: ${props=> props.theme.notas};
+    color:${props=> props.theme.color};
+    width: 50%;
+    min-height: 100vh;
+    
     
 `;
+
+export const SavedNotes = styled.div`
+    width: 80%;
+    min-height: 80%;
+    height: 100px;
+    margin: 10%;
+    padding: 7px;
+    
+    color:${props=> props.theme.color};
+    background-color: ${props => props.theme.notasSalvas};    
+    overflow-y: auto;    
+    ::-webkit-scrollbar{
+        width: 5px;
+        border-radius: 50%;
+        
+    }
+    ::-webkit-scrollbar-track{
+        background-color: ${props => props.theme.notasSalvas};
+    }
+    ::-webkit-scrollbar-thumb{
+        background-color: ${props=> props.theme.menunotas};
+        width: 1px;
+        border-radius: 50px;
+    }
+            
+    div{
+        
+        h6{
+            font-size:1.3em;
+        }
+        
+    }
+
+`;
+
+export const NotesMenu = styled.header`
+border-radius: 15px 0px 0px 0px;
+margin-top: 6px;
+display: flex;
+background-color: ${props => props.theme.menunotas};
+overflow-x: auto; 
+::-webkit-scrollbar{        
+        height: 8px;
+        border-radius: 50%;
+    }
+    ::-webkit-scrollbar-track{
+        background-color: ${props=> props.theme.textarea};
+    }
+    ::-webkit-scrollbar-thumb{
+        background-color: ${props => props.theme.notasSalvas};        
+        border-radius: 50px;
+    };
+p{
+    text-align:left;
+    width: 100%;
+    display: inline-block;
+    margin: 5px;
+    font-size: 1.2em;
+    color: white;
+    
+    
+}
+button.button{
+    margin: 5px;
+    border: none;
+    color: white;
+    max-height: 30px;
+    background-color: ${props => props.theme.menunotas};
+    &:hover{
+        
+        border-radius: 50%;
+        background-color: ${props => props.theme.hoverbutton};
+        color: ${props => props.theme.button};
+    }
+    
+    svg{
+        margin-bottom: 2px
+    }    
+}
+ul{
+    background-color: ${props => props.theme.menunotas};
+    min-width: 30px;
+    button{
+        color: white;
+        &:hover{
+            color: white;
+            background-color: ${props => props.theme.hoverbutton}
+            
+        }       
+    }
+}
+`;
+
+export const ContainerNotes= styled.div`
+resize: none; 
+overflow-y: auto; 
+text-align: left;
+width: 100%;
+height: 70px;
+background-color:${props=> props.theme.textarea};
+border-radius: 0px 0px 15px 0px;
+p{
+    height: auto;
+    max-width: 100%;
+    background-color: black;
+}
+::-webkit-scrollbar{
+        width: 5px;
+        border-radius: 50%;
+        
+    }
+    ::-webkit-scrollbar-track{
+        background-color: ${props => props.theme.notasSalvas};
+    }
+    ::-webkit-scrollbar-thumb{
+        background-color: ${props=> props.theme.menunotas};
+        width: 1px;
+        border-radius: 50px;
+    }
+`;
+
 
 export const Login = styled.div`
     height:90px;
@@ -395,7 +396,7 @@ export const CardUser = styled.div`
 
 `
 
-export const CriarConta = styled.div`
+export const AccountCreate = styled.div`
     background-color:${props=> props.theme.notas};
     width: 100vw;
     height: 100vh;    
@@ -459,70 +460,7 @@ export const CriarConta = styled.div`
         }
     }   
 `
-export const AtualizarConta = styled.div`
-    background-color:${props=> props.theme.notas};
-    width: 100vw;
-    height: 100vh;    
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Luxurious Roman';
-    div.theme{        
-        text-align: right;
-        button{
-            border:none;
-            background-color:transparent;
-            color: ${props=> props.theme.button};            
-        }        
-    }
-    div.CriarConta{
-        background-color: ${props=> props.theme.main};
-        border:2px solid ${props=> props.theme.submenu};
-        border-radius: 10px;
-        color:white;
-        width: 400px;
-        height: 370px;
-        h1{
-            text-align: center;
-            font-size: 3em;
-        }
-        form{            
-            display:block;
-            width: 95%;
-            margin:3px;
-            input{
-                width: 100%;
-                height: 40px;
-                margin:3px;
-                background-color: ${props=> props.theme.submenu};
-                border: none;
-                color:white;                
-                &::placeholder{
-                    color: ${props=> props.theme.placeholder};
-                }                   
-            }
-            div.button{                
-                text-align: right;
-                margin:5px;
-                button{
-                    a{
-                        text-decoration: none;
-                        color: ${props=> props.theme.button}
-                    }
-                    border:none;
-                    background-color:transparent;
-                    color: ${props=> props.theme.button};
-                    &:hover{
-                        border-radius: 10px;
-                        background-color: ${props => props.theme.hoverbutton};
-                }                
-                } 
-                
-            }
-        }
-    }   
-`
+
 export const StyledContainer = styled ( ToastContainer ) `   
   &&&.Toastify__toast-container {
     

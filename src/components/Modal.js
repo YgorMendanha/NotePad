@@ -54,8 +54,13 @@ function Modal(){
                 setForvalues()            
                 toast.error(data)
             }
-        } catch{
+        } catch(e){
+            console.log(e)
+            console.log(Headers.Authorization)
             toast.error("Email ou Senha incorreto!")
+            document.getElementById("email").value = null
+            document.getElementById("password").value = null  
+            setForvalues()
         }
     }
 

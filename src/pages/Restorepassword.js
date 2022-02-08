@@ -1,4 +1,4 @@
-import {CriarConta, StyledContainer } from "../styles"
+import {AccountCreate, StyledContainer } from "../styles"
 import {ThemeProvider} from "styled-components"
 import {useState} from "react"
 import { ligthTheme, darkTheme } from "../theme"
@@ -57,7 +57,7 @@ function Restorepassword(){
     return(         
         <ThemeProvider theme={theme === "light" ? ligthTheme : darkTheme}>
             
-            <CriarConta>
+            <AccountCreate>
                                
                 <div className="CriarConta">   
                     <div className="theme">                        
@@ -79,7 +79,7 @@ function Restorepassword(){
                 position="bottom-left"
                 autoClose={5000}
                 />
-            </CriarConta>
+            </AccountCreate>
         </ThemeProvider>
         
     )
