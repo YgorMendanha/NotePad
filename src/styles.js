@@ -35,28 +35,31 @@ export const Container = styled.div`
     color:${props=> props.theme.color};
     background-color: white;
     display: flex;
-    min-width: 500px;
-    min-height: 100vh;
-    
-    
-    
+    width: 100vw;
+    min-height: 100vh; 
+    flex-direction: row;
+    @media(max-width:500px){
+        flex-direction: column;
+    }
 `;
 
 export const Main = styled.div`
-    width: 50%;
-    min-height: 100vh;
     color:${props=> props.theme.color};    
     background-color: ${props=> props.theme.main};
-    text-align:center;
-    
+    width: 50%;
+    height: auto;
+    @media(max-width:500px){
+        width: 100vw;
+        min-height: 100vh;
+    }
 `;
 
 export const SubMenu = styled.div`    
     background-color: ${props=> props.theme.submenu};
     font-size: 2.5em;    
     display: flex;    
-    height: 90px;
-    text-align: center;
+    height: auto;
+    text-align: center;      
        
     button{
         border:none;
@@ -64,8 +67,13 @@ export const SubMenu = styled.div`
         color: ${props=> props.theme.button};
         padding: 0px;
         width: 45px;
-        height: 90px;
-        font-size: 30px;
+        height: auto;        
+        @media(max-width:3000px){
+        font-size: 3rem;
+    }    
+        @media(max-width:1500px){
+            font-size: 2rem
+    }    
         
     }
     
@@ -73,9 +81,14 @@ export const SubMenu = styled.div`
 
 export const Menu = styled.div`     
     background-color: ${props=> props.theme.main};
-    font-size: 1.8em;    
     text-align: right;
     color: ${props=> props.theme.button};
+    @media(max-width:3000px){
+        font-size: 3rem;
+    }    
+    @media(max-width:1500px){
+        font-size: 1.8em; 
+    }    
     svg{
         margin: 5px; 
     }
@@ -85,16 +98,24 @@ export const Menu = styled.div`
 export const Title = styled.div`
     
     margin: auto;
-    margin-bottom:100px;
     margin-top:0px;
     width: 100%;
-    height: 6em;
-    text-align: center;
-    
+    height: auto;
+    text-align: center;    
     p{
         color:white;
-        font-size: 4em;
+        margin-bottom:50px;
         font-family: 'Luxurious Roman', cursive;
+        @media(max-width:3000px){
+            font-size: 8rem;
+        } 
+        @media(max-width:1500px){
+            font-size: 5rem;
+        }
+        @media(max-width:600px){
+            font-size: 4rem;
+        }
+          
     }
 `;
 
@@ -112,7 +133,14 @@ export const Textarea = styled.div`
         border-left:0px;
         border-right:0px;        
         border-width:1px;
-        border-color:c;
+        outline:none;
+        @media(max-width:3000px){
+            font-size: 2.3rem;
+            margin-bottom: 10px;
+        }
+        @media(max-width:1500px){
+            font-size: 1.3rem;
+        }
         &::placeholder{
             color: ${props=> props.theme.placeholder};
         }        
@@ -121,9 +149,17 @@ export const Textarea = styled.div`
         margin-top: 5px;
         resize: none; 
         width:100%;
-        height: 300px;
+        height: 50vh;
+        outline:none;
         background-color:${props=> props.theme.textarea};
-        color:${props=> props.theme.color}
+        color:${props=> props.theme.color};
+        @media(max-width:3000px){
+            font-size: 2rem;
+        }
+        @media(max-width:1500px){
+            font-size: 1rem;
+            height: 50vh;
+        }
         
     };
     button{
@@ -132,6 +168,12 @@ export const Textarea = styled.div`
         color:white;
         background-color: transparent;
         border: none;
+        @media(max-width:3000px){
+            font-size: 2.3rem;
+        }        
+        @media(max-width:1500px){
+            font-size: 1.3rem;
+        }
         &:hover{
             background-color: ${props => props.theme.hoverbutton};
             color:${props=> props.theme.button};
@@ -145,22 +187,31 @@ export const Textarea = styled.div`
 export const Notes = styled.div`
     background-color: ${props=> props.theme.notas};
     color:${props=> props.theme.color};
+    height: auto;
     width: 50%;
-    min-height: 100vh;
-    
-    
+    @media(max-width:500px){
+        width: 100vw;
+        min-height: 100vh;
+    }   
 `;
 
 export const SavedNotes = styled.div`
-    width: 80%;
-    min-height: 80%;
-    height: 100px;
     margin: 10%;
-    padding: 7px;
-    
+    padding: 7px;    
+    width: 80%;
+    height: 80vh;
     color:${props=> props.theme.color};
     background-color: ${props => props.theme.notasSalvas};    
     overflow-y: auto;    
+    @media(max-width:3000px){
+        font-size: 2.5rem;
+    }
+    @media(max-width:1500px){
+        font-size: 1rem;
+    }  
+    @media(max-width:500px){
+        font-size: 1rem;
+    }   
     ::-webkit-scrollbar{
         width: 5px;
         border-radius: 50%;
@@ -174,14 +225,6 @@ export const SavedNotes = styled.div`
         width: 1px;
         border-radius: 50px;
     }
-            
-    div{
-        
-        h6{
-            font-size:1.3em;
-        }
-        
-    }
 
 `;
 
@@ -190,7 +233,7 @@ border-radius: 15px 0px 0px 0px;
 margin-top: 6px;
 display: flex;
 background-color: ${props => props.theme.menunotas};
-overflow-x: auto; 
+overflow-x: auto;
 ::-webkit-scrollbar{        
         height: 8px;
         border-radius: 50%;
@@ -207,8 +250,13 @@ p{
     width: 100%;
     display: inline-block;
     margin: 5px;
-    font-size: 1.2em;
     color: white;
+    @media(max-width:3000px){
+        font-size: 2.5rem;
+    }       
+    @media(max-width:1500px){
+        font-size: 1.3rem;
+    }
     
     
 }
@@ -216,10 +264,9 @@ button.button{
     margin: 5px;
     border: none;
     color: white;
-    max-height: 30px;
+    height: auto;
     background-color: ${props => props.theme.menunotas};
-    &:hover{
-        
+    &:hover{        
         border-radius: 50%;
         background-color: ${props => props.theme.hoverbutton};
         color: ${props => props.theme.button};
@@ -231,7 +278,13 @@ button.button{
 }
 ul{
     background-color: ${props => props.theme.menunotas};
-    min-width: 30px;
+    width: auto;
+    @media(max-width:3000px){       
+        font-size: 2rem;
+    }  
+    @media(max-width:1500px){
+        font-size: 1rem;
+    }   
     button{
         color: white;
         &:hover{
@@ -248,14 +301,18 @@ resize: none;
 overflow-y: auto; 
 text-align: left;
 width: 100%;
-height: 70px;
+min-height: 50px;
+height: auto;
+max-height:120px;
+padding-left: 5px;
 background-color:${props=> props.theme.textarea};
 border-radius: 0px 0px 15px 0px;
-p{
-    height: auto;
-    max-width: 100%;
-    background-color: black;
-}
+@media(max-width:3000px){
+        font-size: 2rem;
+}    
+@media(max-width:1500px){
+    font-size: 1rem;
+}   
 ::-webkit-scrollbar{
         width: 5px;
         border-radius: 50%;
@@ -263,6 +320,10 @@ p{
     }
     ::-webkit-scrollbar-track{
         background-color: ${props => props.theme.notasSalvas};
+       
+    }
+    ::-webkit-scrollbar-corner{
+        background-color: ${props=> props.theme.notasSalvas}
     }
     ::-webkit-scrollbar-thumb{
         background-color: ${props=> props.theme.menunotas};
@@ -273,17 +334,25 @@ p{
 
 
 export const Login = styled.div`
-    height:90px;
-    background-color: ${props=> props.theme.submenu};    
+    height:auto;
+    background-color: ${props=> props.theme.submenu}; 
     width:100%;
+    display: flex;    
+    align-items: center;
+    justify-content: center;
     button{
         font-size: 0.5em;
         color:white;
-        width: 100px;
+        width: auto;
         border-radius: 3px; 
-        margin:30px;
-        margin-left:65px;
-        height:40%;
+        margin:10px;
+        height:auto;
+        @media(max-width:3000px){
+        font-size: 2.5rem;
+        }    
+        @media(max-width:1500px){
+            font-size: 1.5rem;
+        }
         &:hover{
             background-color: ${props => props.theme.hoverbutton};
             color:${props=> props.theme.button}
@@ -293,9 +362,6 @@ export const Login = styled.div`
         background-color: ${props=> props.theme.main};        
         border-radius: 10px;
         color: white;
-        height: 350px;       
-        justify-content: center;
-        align-items: center;       
 
         div.modal-header{
             width: 100%;
@@ -303,14 +369,21 @@ export const Login = styled.div`
             text-align:center;
             p{  
                 width: 100%;
-                font-size: 1.2em;
                 text-align:center;
+               
+                @media(max-width:1500px){
+                    font-size: 3rem;
+                }   
             }
             button{
-                width: 20px;
-                height: 20px;
+                width: auto;
                 margin-left: 0px;
-                margin-right: 10px;            
+                margin-right: 10px; 
+                
+                @media(max-width:1500px){
+                    height: 20px;
+                    font-size: 1.3rem;
+                }              
             .icon{
                 color:white;
                 margin-bottom: 13px;
@@ -319,19 +392,18 @@ export const Login = styled.div`
         div.modal-body{
             width: 100%;
             form{
-            text-align: left;
-            font-size: 0.5em;
-            p{
-                text-align:center;
-                font-size:1em;
-            }
-            
+            text-align: left;           
             input{
                 background-color: ${props=> props.theme.submenu};
                 border: none;
                 display:inline;
                 width:100%;
                 color:white;
+                outline: none;
+                
+                @media(max-width:1500px){
+                    font-size: 1.5rem;
+                }   
                 &::placeholder{
                 color: ${props=> props.theme.placeholder};
             }         
@@ -347,10 +419,16 @@ export const Login = styled.div`
                 margin: 5px;
                 padding:3px;
                 width:auto;
-                height: 30px;
+                height: auto;
                 text-align: left; 
                 font-size: 18px;
                 display: flex;
+                @media(max-width:3000px){
+                    font-size: 2rem;
+                } 
+                @media(max-width:1500px){
+                font-size: 1.3rem;
+            }   
             
             }
         
@@ -361,8 +439,8 @@ export const CardUser = styled.div`
     color:white;
     background-color: ${props=> props.theme.main};
     margin:5px;
-    height: 80px;
-    width: auto;
+    height: auto;
+    width: 100%;
     display:block;
     text-align: center;  
     div#user{        
@@ -372,21 +450,42 @@ export const CardUser = styled.div`
         p{  
             width: 100%;
             font-size:15px;
-            height: 20px;
-            margin:0px auto 0px auto;
+            height: auto;
+            margin:0px auto 5px auto;
             margin-left:40px;
             text-align:left;
+            @media(max-width:3000px){
+                    font-size: 2rem;
+            } 
+            @media(max-width:1500px){
+                font-size: 1.3rem;
+            }  
+            @media(max-width:500px){
+                font-size: 0.8rem;
+            }  
+
         }
     };
     div#buttons{
         display:flex;
         height: 30px;
         text-align:center;
+        margin-bottom:5px;
         button{            
             font-size:15px;
             height: auto;
             margin:0px auto 0px auto;
             width: auto;
+            @media(max-width:3000px){
+                    font-size: 1.5rem;
+            }
+            @media(max-width:1500px){
+                font-size: 1rem;
+            }  
+            @media(max-width:500px){
+                font-size: 0.8rem;
+            }  
+ 
             a{
                 text-decoration: none;                
                 color:white;
