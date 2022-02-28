@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Notepad from './pages/Notepad'
 import CreateAccount from './pages/CreateAccount'
 import Restorepassword from './pages/Restorepassword'
-
 import { AuthProvider } from './Context/AuthContext'
 
 function App() {

@@ -11,6 +11,7 @@ function Restorepassword() {
 	const [forvalues, setForvalues] = useState()
 
 	const navigate = useNavigate()
+
 	const params = useParams()
 
 	async function Restore() {

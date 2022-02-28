@@ -34,8 +34,11 @@ function Notepad() {
 	const initialState = JSON.parse(localStorage.getItem('Notes')) || []
 
 	const [posts, setPosts] = useState(initialState)
+
 	const [forvalues, setForvalues] = useState()
+
 	const [toedit, setToEdit] = useState(false)
+
 	const [idx, setIdx] = useState()
 
 	// Menu
