@@ -5,7 +5,7 @@ import api from '../services/api'
 
 import { toast } from 'react-toastify';
 
-//Icons
+// Icons
 import {Login, CardUser} from "../styles"
 import { BiLogIn } from "react-icons/bi";
 import { AiOutlineClose } from "react-icons/ai";
@@ -33,9 +33,9 @@ function Modal(){
                 password: forvalues.password
             })            
             if(data.token !== undefined ){
-                let token = data.token  
-                let IdUser = data.id
-                let user = {
+                const token = data.token  
+                const IdUser = data.id
+                const user = {
                     name:data.name,
                     email:data.email
                 }   
@@ -76,7 +76,7 @@ function Modal(){
 
     async function UpdatePassword(){
         try {
-            let IdUser = localStorage.getItem("IdUser")
+            const IdUser = localStorage.getItem("IdUser")
             const {data} = await api.put(`/user/update/${IdUser}`,{               
                 password:forvalues.password,
                 newpassword:forvalues.newpassword,
